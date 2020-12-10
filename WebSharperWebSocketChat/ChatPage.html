@@ -1,0 +1,37 @@
+<div>
+    <h1>WebSharper - WebSocket JavaScript Client</h1>
+    <p id="stateLabel">Ready to connect</p>
+    <p id="connIDLabel">ConnID: N/a</p>
+    <div>
+        <label for="connectionUrl">WebSocket Server URL:</label>
+        <input id="connectionUrl" />
+        <button id="connectButton" type="submit">Connect</button>
+        <button id="closeButton" disabled>Close Socket</button>
+    </div>
+    <p></p>
+    <div>
+        <label for="sendMessage">Message:</label>
+        <input id="sendMessage" disabled />
+        <button id="sendButton" type="submit" disabled>Send</button>
+    </div>
+    <p></p>
+    <div>
+        <label for="recipients">Recipient IDs:</label>
+        <input id="recipients" disabled />
+    </div>
+    <p></p>
+    <h2>Communication Log</h2>
+    <table style="width: 800px">
+        <thead>
+            <tr>
+                <td style="width: 100px">From</td>
+                <td style="width: 100px">To</td>
+                <td>Data</td>
+            </tr>
+        </thead>
+        <tbody id="commsLog">
+        </tbody>
+    </table>
+    <p></p>
+    <replace ws-onafterrender="AfterRender" />
+</div>
