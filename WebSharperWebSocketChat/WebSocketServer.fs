@@ -1,8 +1,6 @@
 namespace WebSharperWebSocketChat
 
 open System
-open System.Text
-open WebSharper
 open WebSharper.AspNetCore.WebSocket.Server
 
 module WebSocketServer =

@@ -19,10 +19,10 @@ module ChatPage =
 
     let private runScript (endpoint : WebSocketEndpoint<string, string>) =
 
-        //TODO: remove, as WebSharper gets it from the endpoint
         let connectionUrl =
             JQuery("#connectionUrl")
-              .Val("ws://localhost:5000")
+              .Val(endpoint.URI)
+              //.Val("ws://localhost:5000")
 
         //TODO: replace JQuery by Html elements
         let connectButton = JQuery("#connectButton")
@@ -55,69 +55,24 @@ module ChatPage =
             connectionUrl.Prop("disabled",true).Ignore
             connectButton.Prop("disabled",true).Ignore
 
-            let readyState:WebSocketReadyState =
-                socket.Connection.ReadyState
-            let test = WebSocketReadyState.Connecting
-            // from WebSocketReadyState
-            Console.Log "socket.Connection.ReadyState"
-            Console.Log socket.Connection.ReadyState
-            Console.Log readyState
+            // NOTE: currently, WIG creates the dll without F# metadata, providing
+            // no support for union or record types, active patterns and so on.
+            // Find description at:
+            //   https://github.com/dotnet-websharper/core/issues/1121#issuecomment-743088088
+            let (|Connecting|Open|Closing|Closed|) readyState =
+                if readyState = WebSocketReadyState.Connecting then Connecting
+                elif readyState = WebSocketReadyState.Open then Open
+                elif readyState = WebSocketReadyState.Closing then Closing
+                else Closed
 
-            // ERROR: WebSharper cannot resolve the WebSocketReadyState type options
-            // //match socket.Connection.ReadyState with
-            // match readyState with
-            // | WebSocketReadyState.Connecting ->
-            //     Console.Log("ReadyState:Connecting")
-            //     stateLabel.Html("Connecting...").Ignore
-            //     disable()
-
-            // | Open ->
-            //     Console.Log("ReadyState:Open")
-            //     stateLabel.Html("Open").Ignore
-
-            //     match msg with
-            //     | WebSocketClient.Message data ->
-            //         isConnID data
-            //     | _ -> ()
-
-            //     enable()
-
-            // | Closing ->
-            //     Console.Log("ReadyState:Closing")
-            //     stateLabel.Html("Closing...").Ignore
-            //     disable()
-
-            // | Closed ->
-            //     Console.Log("ReadyState:Closed")
-            //     stateLabel.Html("Closed").Ignore
-            //     connID.Html("ConnID: N/a").Ignore
-            //     disable()
-            //     connectionUrl.Prop("disabled",false).Ignore
-            //     connectButton.Prop("disabled",false).Ignore
-
-            // | _ ->
-            //     Console.Log("ReadyState:unknown")
-            //     let errorMsg =
-            //         sprintf "Unknown WebSocket State: %A" (socket.Connection.ReadyState)
-            //     stateLabel.Html(errorMsg).Ignore
-            //     disable()
-
-            let readyStateS =
-                sprintf "%A" socket.Connection.ReadyState
-            let readyStateInt =
-                JS.ParseInt(readyStateS, 10)
-            Console.Log "readyStateS"
-            Console.Log readyStateS
-            Console.Log "readyStateInt"
-            Console.Log readyStateInt
-            // GAMBIARRA/WORKAROUND: check error comment above
-            match readyStateInt with
-            | 0 ->
+            //match socket.Connection.ReadyState with
+            match socket.Connection.ReadyState with
+            | Connecting ->
                 Console.Log("ReadyState:Connecting")
                 stateLabel.Html("Connecting...").Ignore
                 disable()
 
-            | 1 ->
+            | Open ->
                 Console.Log("ReadyState:Open")
                 stateLabel.Html("Open").Ignore
 
@@ -128,12 +83,12 @@ module ChatPage =
 
                 enable()
 
-            | 2 ->
+            | Closing ->
                 Console.Log("ReadyState:Closing")
                 stateLabel.Html("Closing...").Ignore
                 disable()
 
-            | 3 ->
+            | Closed ->
                 Console.Log("ReadyState:Closed")
                 stateLabel.Html("Closed").Ignore
                 connID.Html("ConnID: N/a").Ignore
@@ -147,7 +102,6 @@ module ChatPage =
                     sprintf "Unknown WebSocket State: %A" (socket.Connection.ReadyState)
                 stateLabel.Html(errorMsg).Ignore
                 disable()
-
 
         let gServer = ref None
 
@@ -214,5 +168,5 @@ module ChatPage =
 
     let Main (endpoint : WebSocketEndpoint<string, string>) =
         ChatPageTemplate()
-          .AfterRender(fun (el:Dom.Element) -> runScript endpoint)
+          .AfterRender(fun (_:Dom.Element) -> runScript endpoint)
           .Doc()

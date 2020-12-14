@@ -8,7 +8,8 @@ open WebSharper.UI.Server
 open WebSharper.AspNetCore.WebSocket
 
 type EndPoint =
-    | [<EndPoint "/">] Home
+    | [<EndPoint "/">] ChatJQuery
+    | [<EndPoint "/chat-reactive">] ChatReactive
     | [<EndPoint "/about">] About
 
 module Templating =
@@ -23,7 +24,8 @@ module Templating =
                 a [attr.href (ctx.Link act)] [text txt]
              ]
         [
-            "Home" => EndPoint.Home
+            "Chat - JQuery" => EndPoint.ChatJQuery
+            "Chat - Reactive" => EndPoint.ChatReactive
             "About" => EndPoint.About
         ]
 
@@ -42,11 +44,20 @@ module Site =
     let MyEndPoint (url: string) : WebSharper.AspNetCore.WebSocket.WebSocketEndpoint<string, string> =
         WebSocketEndpoint.Create(url, "/ws", JsonEncoding.Readable)
 
-    let HomePage (ctx: Context<_>) =
+    let ChatJqueryPage (ctx: Context<_>) =
         let wsep = MyEndPoint (ctx.RequestUri.ToString())
 
-        Templating.Main ctx EndPoint.Home "Home" [
+        Templating.Main ctx EndPoint.ChatJQuery "Chat - JQuery" [
+            //div [] [ client <@ ChatPage.Main wsep @> ]
             div [] [ client <@ ChatPage.Main wsep @> ]
+        ]
+
+    let ChatReactivePage (ctx: Context<_>) =
+        let wsep = MyEndPoint (ctx.RequestUri.ToString())
+
+        Templating.Main ctx EndPoint.ChatReactive "Chat - Reactive" [
+            //div [] [ client <@ ChatPage.Main wsep @> ]
+            div [] [ client <@ ChatPage2.Main wsep @> ]
         ]
 
     let AboutPage ctx =
@@ -59,6 +70,7 @@ module Site =
     let Main =
         Application.MultiPage (fun (ctx: Context<_>) endpoint ->
             match endpoint with
-            | EndPoint.Home -> HomePage ctx
+            | EndPoint.ChatJQuery -> ChatJqueryPage ctx
+            | EndPoint.ChatReactive -> ChatReactivePage ctx
             | EndPoint.About -> AboutPage ctx
         )
