@@ -1,0 +1,36 @@
+<div>
+    <h1>WebSharper - WebSocket JavaScript Client</h1>
+    <p id="stateLabel">${StateLabel}</p>
+    <p id="connIDLabel">ConnID: ${ConnIDLabel}</p>
+    <div>
+        <label for="connectionUrl">WebSocket Server URL:</label>
+        <input id="connectionUrl" ws-var="ConnectionUrl" ws-attr="ConnectionUrlDisabled"/>
+        <button id="connectButton" type="submit" ws-onclick="ConnectButtonOnClick" ws-attr="ConnectButtonDisabled">Connect</button>
+        <button id="closeButton" ws-onclick="CloseButtonOnClick" ws-attr="CloseButtonEnabled">Close Socket</button>
+    </div>
+    <p></p>
+    <div>
+        <label for="sendMessage">Message:</label>
+        <input id="sendMessage" ws-var="SendMessage" ws-attr="SendMessageEnabled" />
+        <button id="sendButton" type="submit" ws-onclick="SendButtonOnClick" ws-attr="SendButtonEnabled">Send</button>
+    </div>
+    <p></p>
+    <div>
+        <label for="recipients">Recipient IDs:</label>
+        <input id="recipients" ws-var="Recipients" ws-attr="RecipientsEnabled" />
+    </div>
+    <p></p>
+    <h2>Communication Log</h2>
+    <table style="width: 800px">
+        <thead>
+            <tr>
+                <td style="width: 100px">From</td>
+                <td style="width: 100px">To</td>
+                <td>Data</td>
+            </tr>
+        </thead>
+        <tbody id="commsLog">
+        </tbody>
+    </table>
+    <p></p>
+</div>
