@@ -5,7 +5,6 @@ The application is partially implemented, but is working. PR are welcome.
 
 This is not intended to be used as a reference, but only for testing.
 
-
 * Usage
 From the solution (.sln) folder:
 #+begin_src shell
@@ -55,4 +54,12 @@ I believe it would be better to implement this component with WIG, instead.
 ** HubConnection vs HubConnectionBuilder
 This is regarded to the breaking changes on the API.
 
-Before, creating the connection object as a single step. Now, there are to classes and some configuration must be done with the builder, before calling the build() method to get an instance of the connection object.
+Before, creating the connection object as a single step. Now, there are two classes and some configuration must be done with the builder, before calling the build() method to get an instance of the connection object.
+
+* References
+- https://github.com/aspnet/SignalR-samples (the ChatSample)
+- https://stackoverflow.com/questions/21031160/when-is-the-connection-closed-with-signalr-from-browser (previous API with userConnected and broadcastMessage methods)
+- https://docs.microsoft.com/en-us/aspnet/core/signalr/version-differences?view=aspnetcore-3.1#differences-on-the-server
+- https://docs.microsoft.com/en-us/javascript/api/@microsoft/signalr/?view=signalr-js-latest
+- https://docs.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-5.0
+- https://github.com/ChrisDobby/Chrisjdobson.Websharper.SignalR

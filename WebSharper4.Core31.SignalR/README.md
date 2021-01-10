@@ -1,12 +1,13 @@
-- [About](#org2c6af77)
-- [Usage](#org1cfbccf)
-- [Issues](#org5de32c4)
-  - [global reference to SignalR's connection object](#org1fce2df)
-  - [SignalR ASP.NET Core changes on API](#org4778913)
-  - [HubConnection vs HubConnectionBuilder](#org60c58b8)
+- [About](#orgfc0b69e)
+- [Usage](#orga08e3b7)
+- [Issues](#orge68d790)
+  - [global reference to SignalR's connection object](#org96691bb)
+  - [SignalR ASP.NET Core changes on API](#org51a590c)
+  - [HubConnection vs HubConnectionBuilder](#org86dcda5)
+- [References](#org75d4df3)
 
 
-<a id="org2c6af77"></a>
+<a id="orgfc0b69e"></a>
 
 # About
 
@@ -17,7 +18,7 @@ The application is partially implemented, but is working. PR are welcome.
 This is not intended to be used as a reference, but only for testing.
 
 
-<a id="org1cfbccf"></a>
+<a id="orga08e3b7"></a>
 
 # Usage
 
@@ -30,12 +31,12 @@ $ dotnet run --project ChatSample
 Open two browsers instance pointing to <http://localhost:5000/> two emulate different users.
 
 
-<a id="org5de32c4"></a>
+<a id="orge68d790"></a>
 
 # Issues
 
 
-<a id="org1fce2df"></a>
+<a id="org96691bb"></a>
 
 ## global reference to SignalR's connection object
 
@@ -71,7 +72,7 @@ type Connection[<JavaScript>]() =
 ```
 
 
-<a id="org4778913"></a>
+<a id="org51a590c"></a>
 
 ## SignalR ASP.NET Core changes on API
 
@@ -82,10 +83,22 @@ For this sample, I didn't implemented some methods, like Connection.ConnectionEr
 I believe it would be better to implement this component with WIG, instead.
 
 
-<a id="org60c58b8"></a>
+<a id="org86dcda5"></a>
 
 ## HubConnection vs HubConnectionBuilder
 
 This is regarded to the breaking changes on the API.
 
-Before, creating the connection object as a single step. Now, there are to classes and some configuration must be done with the builder, before calling the build() method to get an instance of the connection object.
+Before, creating the connection object as a single step. Now, there are two classes and some configuration must be done with the builder, before calling the build() method to get an instance of the connection object.
+
+
+<a id="org75d4df3"></a>
+
+# References
+
+-   <https://github.com/aspnet/SignalR-samples> (the ChatSample)
+-   <https://stackoverflow.com/questions/21031160/when-is-the-connection-closed-with-signalr-from-browser> (previous API with userConnected and broadcastMessage methods)
+-   <https://docs.microsoft.com/en-us/aspnet/core/signalr/version-differences?view=aspnetcore-3.1#differences-on-the-server>
+-   <https://docs.microsoft.com/en-us/javascript/api/@microsoft/signalr/?view=signalr-js-latest>
+-   <https://docs.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-5.0>
+-   <https://github.com/ChrisDobby/Chrisjdobson.Websharper.SignalR>
