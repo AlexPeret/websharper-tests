@@ -1,0 +1,58 @@
+* About
+This is an attempt to port the [[https://github.com/ChrisDobby/Chrisjdobson.Websharper.SignalR][ ChrisDobby/Chrisjdobson.Websharper.SignalR]] project to .NET Core 3.1 and WebSharper 4.7.
+
+The application is partially implemented, but is working. PR are welcome.
+
+This is not intended to be used as a reference, but only for testing.
+
+
+* Usage
+From the solution (.sln) folder:
+#+begin_src shell
+$ dotnet run --project ChatSample
+#+end_src
+
+Open two browsers instance pointing to http://localhost:5000/ two emulate different users.
+
+* Issues
+** global reference to SignalR's connection object
+Looks like the WebSharper compiler changed alot since version 3.x and I couldn't find a way to make a reference to the global object.
+
+For instance, the snippet below won't find the ```connection``` object created by the Resource SignalRConnection. Which, by the way, I'm not using as a workaround.
+#+begin_src fsharp
+
+  type Connection[<JavaScript>]() =
+
+      ...
+
+      [<JavaScript>]
+      // transpiler won't reference to connection object
+      [<Inline "connection.baseUrl = $url;">]
+      static member New(url : string) = Connection()
+    ...
+#+end_src
+
+The solution was to use the $global fake variable.
+#+begin_src fsharp
+
+  type Connection[<JavaScript>]() =
+    
+      ...
+
+      [<JavaScript>]
+      [<Inline "$global.connection.baseUrl = $url;">]
+      static member New(url : string) = Connection()
+    ...
+#+end_src
+
+** SignalR ASP.NET Core changes on API
+A lot of breaking changes from previous version (ASP.NET Framework).
+
+For this sample, I didn't implemented some methods, like Connection.ConnectionError and others.
+
+I believe it would be better to implement this component with WIG, instead.
+
+** HubConnection vs HubConnectionBuilder
+This is regarded to the breaking changes on the API.
+
+Before, creating the connection object as a single step. Now, there are to classes and some configuration must be done with the builder, before calling the build() method to get an instance of the connection object.

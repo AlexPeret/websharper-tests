@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Dependencies.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WebSharper" Version="4.7.0.423" />
+    <PackageReference Include="WebSharper.Core" Version="4.7.0.423" />
+    <PackageReference Include="WebSharper.FSharp" Version="4.7.0.423" />
+  </ItemGroup>
+
+</Project>
